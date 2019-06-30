@@ -6,7 +6,9 @@ import time
 import os
 import subprocess
 
-TOKEN = open('Token.txt', 'r').read().split('\n')[0]
+t = open('Keys.txt', 'r').read().split('\n')
+TOKEN = t[0]
+WEBHOOK_URL = t[1]
 bot = telebot.TeleBot(TOKEN)
 
 telebot.logger.setLevel(logging.INFO)
@@ -46,7 +48,7 @@ def photo(message):
     os.remove(PTH)
     os.remove(processed_PTH)
 
-@app.route('/', methods=['POST'])
+@app.route('/' + TOKEN, methods=['POST'])
 def getMessage():
     if request.headers.get('content-type') == 'application/json':
         json_string = request.get_data().decode('utf-8')
@@ -57,11 +59,11 @@ def getMessage():
         abort(403)
 
 
-@app.route('/')
+@app.route('/' + TOKEN)
 def webhook():
     bot.remove_webhook()
     time.sleep(1)
-    bot.set_webhook(url='https://weanew.pythonanywhere.com/')
+    bot.set_webhook(url='' + TOKEN)
     return "!", 200
 
 
