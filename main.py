@@ -5,6 +5,7 @@ import logging
 import time
 import os
 import subprocess
+import git
 
 bot_directory = 'DocCollectorBot/'
 t = open(bot_directory + 'Keys.txt', 'r').read().split('\n')
@@ -16,7 +17,6 @@ telebot.logger.setLevel(logging.INFO)
 
 app = Flask(__name__)
 sslify = SSLify(app)
-
 
 @bot.message_handler(commands=['start'])
 def start(message):
@@ -48,6 +48,16 @@ def photo(message):
     bot.send_photo(message.chat.id, upload_file)
     os.remove(PTH)
     os.remove(processed_PTH)
+
+@app.route('/update_server', methods=['POST'])
+def webhookGIT():
+    if request.method == 'POST':
+        repo = git.Repo('path/to/git_repo')
+        origin = repo.remotes.origin
+        origin.pull()
+        return 'Updated PythonAnywhere successfully', 200
+    else:
+        return 'Wrong event type', 400
 
 @app.route('/' + TOKEN, methods=['POST'])
 def getMessage():
