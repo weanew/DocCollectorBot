@@ -74,6 +74,7 @@ def webhook():
     bot.remove_webhook()
     time.sleep(1)
     bot.set_webhook(url = WEBHOOK_URL + TOKEN)
+    bot.send_message(336128844,"reboot")
     return "!", 200
 
 
