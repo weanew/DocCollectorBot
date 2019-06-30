@@ -6,7 +6,8 @@ import time
 import os
 import subprocess
 
-t = open('Keys.txt', 'r').read().split('\n')
+bot_directory = 'DocCollectorBot/'
+t = open(bot_directory + 'Keys.txt', 'r').read().split('\n')
 TOKEN = t[0]
 WEBHOOK_URL = t[1]
 bot = telebot.TeleBot(TOKEN)
@@ -29,7 +30,7 @@ def echo_message(message):
 @bot.message_handler(content_types=['photo'])
 def photo(message):
     fileID = message.photo[-1].file_id
-    output = './bot/images/'
+    output = './' + bot_directory + 'images/'
     file = bot.get_file(fileID)
     Path = file.file_path
     downloaded_file = bot.download_file(Path)
@@ -37,12 +38,12 @@ def photo(message):
     file_name = Path.split('/')[-1]
     with open(output + file_name, 'wb') as new_file:
         new_file.write(downloaded_file)
-    
+
     PTH = output + file_name
-    bash_command = 'python3 ./bot/scan.py --image ' + PTH
+    bash_command = 'python3 ./' + bot_directory + 'scan.py --image ' + PTH
     process = subprocess.Popen(bash_command.split(), stdout=subprocess.PIPE)
     output, error = process.communicate()
-    processed_PTH = './bot/scanned/' + file_name 
+    processed_PTH = bot_directory + 'scanned/' + file_name
     upload_file = open(processed_PTH, 'rb')
     bot.send_photo(message.chat.id, upload_file)
     os.remove(PTH)
@@ -63,7 +64,7 @@ def getMessage():
 def webhook():
     bot.remove_webhook()
     time.sleep(1)
-    bot.set_webhook(url='' + TOKEN)
+    bot.set_webhook(url = WEBHOOK_URL + TOKEN)
     return "!", 200
 
 
