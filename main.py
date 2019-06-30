@@ -24,7 +24,7 @@ def start(message):
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
-    bot.reply_to(message, message.text)
+    bot.reply_to(message, message.text + ' ' + message.chat_id)
 
 @bot.message_handler(content_types=['photo'])
 def photo(message):
@@ -74,7 +74,6 @@ def webhook():
     bot.remove_webhook()
     time.sleep(1)
     bot.set_webhook(url = WEBHOOK_URL + TOKEN)
-    bot.send_message(336128844,"reboot")
     return "!", 200
 
 
