@@ -22,6 +22,7 @@ sslify = SSLify(app)
 def start(message):
     bot.reply_to(message, 'Hello, ' + message.from_user.first_name)
 
+#gitchecking
 
 @bot.message_handler(func=lambda message: True, content_types=['text'])
 def echo_message(message):
@@ -52,7 +53,7 @@ def photo(message):
 @app.route('/update_server', methods=['POST'])
 def webhookGIT():
     if request.method == 'POST':
-        repo = git.Repo('path/to/git_repo')
+        repo = git.Repo('https://github.com/weanew/DocCollectorBot')
         origin = repo.remotes.origin
         origin.pull()
         return 'Updated PythonAnywhere successfully', 200
